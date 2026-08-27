@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espaço do Cliente - Felipe Albuquerque Advocacia</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1b2a4a">
+<link rel="apple-touch-icon" href="icone-192.png">
+<link rel="icon" type="image/png" href="icone-192.png">
+<style>
+  :root{
+    --navy:#1b2a4a; --navy-2:#24365c; --gold:#b0893c;
+    --ink:#1f2733; --muted:#5b6675; --line:#e4e7ec; --line-2:#eef1f5;
+    --bg:#f4f6f9; --card:#ffffff;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06);
+    --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --serif:Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:var(--font);color:var(--ink);background:var(--bg);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .oculto{display:none !important}
+  button{font-family:inherit}
+
+  /* ---------- carregando ---------- */
+  .carregando{min-height:100vh;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px}
+
+  /* ---------- login ---------- */
+  .login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;
+    background:linear-gradient(160deg,var(--navy),#0f1a30)}
+  .login-cx{width:100%;max-width:380px;background:#fff;border-radius:var(--radius);padding:30px 28px 24px;
+    box-shadow:0 20px 60px rgba(0,0,0,.35)}
+  .login-marca{text-align:center;margin-bottom:22px}
+  .fa{width:46px;height:46px;margin:0 auto;border:1.5px solid var(--gold);border-radius:9px;display:flex;
+    align-items:center;justify-content:center;font-family:var(--serif);font-weight:700;letter-spacing:1px;
+    color:var(--gold);font-size:18px}
+  .login-marca h1{font-family:var(--serif);font-size:19px;margin:14px 0 2px;color:var(--navy)}
+  .login-marca p{margin:0;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+  .login-cx label{display:block;font-size:12px;color:var(--muted);font-weight:600;margin:14px 0 5px}
+  .login-cx input{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:9px;font-size:14px;font-family:inherit}
+  .login-cx input:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(27,42,74,.10)}
+  .entrar{width:100%;margin-top:20px;padding:12px;border:0;border-radius:9px;background:var(--navy);color:#fff;
+    font-size:14.5px;font-weight:600;cursor:pointer}
+  .entrar:hover{background:var(--navy-2)} .entrar:disabled{opacity:.6;cursor:default}
+  .erro{display:none;margin-top:12px;padding:10px 12px;background:#fdeceb;color:#7a1a15;border-radius:9px;font-size:13px}
+  .login-cx .rodape{margin-top:18px;padding-top:14px;border-top:1px solid var(--line-2);font-size:11.5px;color:var(--muted);text-align:center;line-height:1.6}
+
+  /* ---------- topo ---------- */
+  .topo{display:flex;align-items:center;gap:12px;padding:12px 20px;background:var(--navy);color:#fff;
+    position:sticky;top:0;z-index:40;flex-wrap:wrap}
+  .topo .fa{width:34px;height:34px;font-size:13px}
+  .topo .txt{font-family:var(--serif);font-size:15px;font-weight:700;letter-spacing:.4px}
+  .topo .marca{display:flex;align-items:center;gap:10px}
+  .topo .sep{flex:1}
+  .quem{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#cfd6e6}
+  .selo{font-size:10px;font-weight:700;letter-spacing:.6px;background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.28);padding:2px 8px;border-radius:20px}
+  .bt-topo{font-size:12.5px;font-weight:600;color:#e7ecf6;background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.28);padding:7px 14px;border-radius:20px;cursor:pointer;white-space:nowrap}
+  .bt-topo:hover{background:rgba(255,255,255,.18);border-color:var(--gold)}
+
+  /* ---------- conteúdo ---------- */
+  .wrap{max-width:860px;margin:0 auto;padding:30px 20px 90px}
+  .titulo-pg{font-family:var(--serif);font-size:24px;margin:10px 0 4px;color:var(--navy)}
+  .sub-pg{margin:0;color:var(--muted);font-size:14px}
+
+  .grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;margin-top:26px}
+  .modulo{display:flex;flex-direction:column;gap:10px;background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;cursor:pointer;transition:.15s;
+    text-decoration:none;color:inherit}
+  .modulo:hover{border-color:var(--navy);box-shadow:0 6px 20px rgba(16,24,40,.12);transform:translateY(-2px)}
+  .modulo .ico{width:44px;height:44px;border-radius:10px;background:var(--line-2);display:flex;
+    align-items:center;justify-content:center;font-size:22px}
+  .modulo h2{margin:2px 0 0;font-size:16px;color:var(--navy)}
+  .modulo p{margin:0;font-size:13px;color:var(--muted);flex:1}
+  .modulo .ir{font-size:12.5px;font-weight:700;color:var(--gold);letter-spacing:.3px}
+  .modulo .tag{align-self:flex-start;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+    background:var(--line-2);color:var(--muted);padding:3px 9px;border-radius:20px}
+
+  .nota{margin-top:30px;padding:14px 16px;background:#eef4fb;border:1px solid #d3e2f2;border-radius:10px;
+    font-size:12.5px;color:#1c3d63}
+</style>
+</head>
+<body>
+
+<div id="carregando" class="carregando">Carregando…</div>
+
+<!-- =================== LOGIN =================== -->
+<div id="telaLogin" class="login oculto">
+  <div class="login-cx">
+    <div class="login-marca">
+      <div class="fa">FA</div>
+      <h1>Felipe Albuquerque Advocacia</h1>
+      <p>Espaço do Cliente</p>
+    </div>
+    <form id="formLogin">
+      <label for="email">E-mail</label>
+      <input type="email" id="email" autocomplete="username" required>
+      <label for="senha">Senha</label>
+      <input type="password" id="senha" autocomplete="current-password" required>
+      <button type="submit" class="entrar" id="btEntrar">Entrar</button>
+      <div class="erro" id="loginErro"></div>
+    </form>
+    <div class="rodape">
+      Acesso restrito a clientes e equipe do escritório.<br>
+      Esqueceu a senha? Fale com o escritório.
+    </div>
+  </div>
+</div>
+
+<!-- =================== APP =================== -->
+<div id="app" class="oculto">
+  <div class="topo">
+    <div class="marca">
+      <div class="fa">FA</div>
+      <div class="txt">Espaço do Cliente</div>
+    </div>
+    <div class="sep"></div>
+    <div class="quem">
+      <span id="quemNome"></span>
+      <span class="selo" id="quemSelo"></span>
+    </div>
+    <button class="bt-topo" id="btSair">Sair</button>
+  </div>
+
+  <div class="wrap">
+    <h1 class="titulo-pg" id="saudacao">Bem-vindo</h1>
+    <p class="sub-pg">Escolha abaixo o serviço que deseja acessar.</p>
+    <div class="grade" id="grade"></div>
+    <div class="nota" id="notaCliente">
+      Você entra nos portais com este mesmo login, sem digitar a senha de novo.
+      Em caso de dúvida, fale com o escritório.
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* =========================================================================
+   Hub de acesso - Felipe Albuquerque Advocacia
+   Mesmo projeto Supabase dos portais: a sessão criada aqui vale lá,
+   porque tudo mora na mesma origem (rrguimaraes09-hub.github.io).
+   A chave "anon" é feita para ficar em página pública: sozinha ela não
+   lê nada - quem manda é o RLS do banco.
+   ========================================================================= */
+const SUPABASE_URL = "https://jhtucanundmlsmipfnie.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_MTMJaYe0e2kplnrR_TZfpA_Hq8JXXGK";
+
+/* Módulos exibidos. "quem": todos | escritorio. "externo" abre em outra aba
+   (sistema com login próprio, fora do nosso Supabase). */
+const MODULOS = [
+  {
+    titulo: "Envio de Documentos",
+    ico: "📁",
+    url: "https://rrguimaraes09-hub.github.io/documentos/",
+    quem: "todos",
+    descCliente: "Envie os documentos dos seus casos pelo checklist e acompanhe a conferência do escritório.",
+    descEscritorio: "Quadro de todas as pastas de documentos, de todos os clientes, com o funil de conferência."
+  },
+  {
+    titulo: "Análise de Cedentes",
+    ico: "🔎",
+    url: "https://rrguimaraes09-hub.github.io/cedentes/",
+    quem: "todos",
+    descCliente: "Peça a análise processual de um pretenso cedente e acompanhe o andamento até o relatório.",
+    descEscritorio: "Fila de análises de cedentes de todos os clientes, da entrada ao relatório entregue."
+  },
+  {
+    titulo: "DataJuri",
+    ico: "⚖️",
+    url: "https://dj33.datajuri.com.br",
+    quem: "escritorio",
+    externo: true,
+    descEscritorio: "Sistema jurídico do escritório: processos, atividades e agenda. Login próprio do DataJuri."
+  }
+];
+
+let sb = null;
+let eu = null;   // {user_id, nome, papel, cliente_id}
+
+const esc = s => String(s ?? "").replace(/[&<>"']/g, m =>
+  ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+const ehEscritorio = () => eu && eu.papel === "escritorio";
+
+/* ---------- entrada ---------- */
+async function iniciar(){
+  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const { data:{ session } } = await sb.auth.getSession();
+  sb.auth.onAuthStateChange(ev => { if(ev === "SIGNED_OUT") location.reload(); });
+  document.getElementById("carregando").classList.add("oculto");
+  session ? await entrar() : mostrarLogin();
+}
+
+function mostrarLogin(){
+  document.getElementById("telaLogin").classList.remove("oculto");
+  document.getElementById("app").classList.add("oculto");
+  document.getElementById("email").focus();
+}
+
+document.getElementById("formLogin").addEventListener("submit", async e => {
+  e.preventDefault();
+  const bt = document.getElementById("btEntrar"), err = document.getElementById("loginErro");
+  bt.disabled = true; bt.textContent = "Entrando…"; err.style.display = "none";
+  const { error } = await sb.auth.signInWithPassword({
+    email: document.getElementById("email").value.trim(),
+    password: document.getElementById("senha").value
+  });
+  if(error){
+    err.textContent = "E-mail ou senha inválidos.";
+    err.style.display = "block";
+    bt.disabled = false; bt.textContent = "Entrar";
+    document.getElementById("senha").value = "";
+    return;
+  }
+  await entrar();
+});
+
+async function entrar(){
+  // Quem sou eu vem do BANCO, nunca da tela.
+  const { data:perfil, error } = await sb.from("perfis").select("*").maybeSingle();
+  if(error || !perfil){
+    document.getElementById("telaLogin").classList.remove("oculto");
+    const err = document.getElementById("loginErro");
+    err.innerHTML = "Este usuário ainda não tem perfil vinculado.<br>Procure o escritório.";
+    err.style.display = "block";
+    document.getElementById("btEntrar").disabled = false;
+    document.getElementById("btEntrar").textContent = "Entrar";
+    await sb.auth.signOut();
+    return;
+  }
+  eu = perfil;
+
+  document.getElementById("telaLogin").classList.add("oculto");
+  document.getElementById("app").classList.remove("oculto");
+  document.getElementById("quemNome").textContent = eu.nome;
+  document.getElementById("quemSelo").textContent = ehEscritorio() ? "ESCRITÓRIO" : "CLIENTE";
+  const primeiroNome = String(eu.nome || "").trim().split(/\s+/)[0];
+  document.getElementById("saudacao").textContent =
+    primeiroNome ? `Olá, ${primeiroNome}` : "Olá";
+  if(ehEscritorio()) document.getElementById("notaCliente").classList.add("oculto");
+
+  pintarModulos();
+}
+
+function pintarModulos(){
+  const visiveis = MODULOS.filter(m => m.quem === "todos" || ehEscritorio());
+  document.getElementById("grade").innerHTML = visiveis.map(m => {
+    const desc = ehEscritorio() ? m.descEscritorio : m.descCliente;
+    const alvo = m.externo ? ` target="_blank" rel="noopener"` : "";
+    const tag  = m.externo ? `<span class="tag">Sistema externo</span>` : "";
+    return `<a class="modulo" href="${esc(m.url)}"${alvo}>
+      <div class="ico">${m.ico}</div>
+      <h2>${esc(m.titulo)}</h2>
+      ${tag}
+      <p>${esc(desc)}</p>
+      <span class="ir">Acessar →</span>
+    </a>`;
+  }).join("");
+}
+
+document.getElementById("btSair").onclick = async () => { await sb.auth.signOut(); };
+
+iniciar();
+
+/* PWA: registra o service worker (só existe em https/localhost; em file:// ignora). */
+if("serviceWorker" in navigator && location.protocol === "https:"){
+  navigator.serviceWorker.register("sw.js").catch(()=>{});
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "Espaço do Cliente - Felipe Albuquerque Advocacia",
+  "short_name": "FA Advocacia",
+  "description": "Acesso aos portais do escritório Felipe Albuquerque Advocacia.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#1b2a4a",
+  "theme_color": "#1b2a4a",
+  "lang": "pt-BR",
+  "icons": [
+    { "src": "icone-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icone-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

@@ -111,6 +111,9 @@
   .fitem .furg{flex:0 0 auto;font-size:9.5px;font-weight:800;letter-spacing:.4px;background:#fdecea;color:#a4261b;
     padding:2px 7px;border-radius:4px}
   .fila-vazia{padding:22px 16px;text-align:center;color:var(--muted);font-size:13.5px}
+  .fila-mais{display:block;width:100%;padding:11px 16px;border:0;
+    background:#fafbfd;color:var(--gold);font-size:12.5px;font-weight:700;letter-spacing:.3px;cursor:pointer;text-align:center}
+  .fila-mais:hover{background:#f4f6fa}
 
   .sec-tit{margin:30px 0 0;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted)}
 
@@ -404,12 +407,23 @@ function pintarCliente(fonte){
   }).join("");
 }
 
+const LIMITE_FILA = 6;      /* acima disso a fila recolhe, com "ver todas" no rodapé do card */
+let filaExpandida = false;
+let ultimaFonteEsc = null;
+
 function pintarEscritorio(fonte){
+  ultimaFonteEsc = fonte;
   const f = fonte.fila;
   document.getElementById("filaSub").textContent = f.length
     ? plural(f.length, "1 pendência nos portais, em ordem de urgência.", "{n} pendências nos portais, em ordem de urgência.")
     : "Nada pendente nos portais neste momento.";
-  document.getElementById("fila").innerHTML = f.length ? f.map(i => `
+  const visiveis = filaExpandida ? f : f.slice(0, LIMITE_FILA);
+  const rodape = f.length > LIMITE_FILA
+    ? `<button type="button" class="fila-mais" id="btFilaTudo">${filaExpandida
+        ? "Mostrar só as primeiras ↑"
+        : "Ver todas as " + f.length + " pendências ↓"}</button>`
+    : "";
+  document.getElementById("fila").innerHTML = f.length ? visiveis.map(i => `
     <a class="fitem" href="${esc(i.url)}">
       <div class="fico">${ICONES[i.area] || ICONES.pasta}</div>
       <div class="fmeio">
@@ -418,7 +432,9 @@ function pintarEscritorio(fonte){
       </div>
       ${i.urgente ? '<span class="furg">URGENTE</span>' : ""}
       <span class="ftempo ${i.dias >= 3 ? "velho" : ""}">${rotDias(i.dias)}</span>
-    </a>`).join("") : '<div class="fila-vazia">✓ Fila limpa — nada pendente nos portais.</div>';
+    </a>`).join("") + rodape : '<div class="fila-vazia">✓ Fila limpa — nada pendente nos portais.</div>';
+  const bt = document.getElementById("btFilaTudo");
+  if(bt) bt.onclick = () => { filaExpandida = !filaExpandida; pintarEscritorio(ultimaFonteEsc); };
 
   document.getElementById("gradeEsc").innerHTML = MODULOS.map(m => `
     <a class="modulo" href="${esc(m.url)}">

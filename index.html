@@ -5,14 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Espaço do Cliente - Felipe Albuquerque Advocacia</title>
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#1b2a4a">
+<meta name="theme-color" content="#17223F">
 <link rel="apple-touch-icon" href="icone-192.png?v=2">
 <link rel="icon" type="image/png" href="icone-192.png?v=2">
 <style>
   :root{
-    --navy:#1b2a4a; --navy-2:#24365c; --gold:#b0893c;
+    /* Paleta canônica fixada em 29/08/2026 (decisão do Rafael) */
+    --navy:#17223F; --navy-2:#22304F; --gold:#B08D57;
     --ink:#1f2733; --muted:#5b6675; --line:#e4e7ec; --line-2:#eef1f5;
     --bg:#f4f6f9; --card:#ffffff;
+    --acao-bg:#FAEEDA; --acao-tx:#854F0B;
+    --esc-bg:#F1EFE8;  --esc-tx:#444441;
+    --novo-bg:#E1F5EE; --novo-tx:#0F6E56;
     --radius:14px;
     --shadow:0 1px 2px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06);
     --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
@@ -24,62 +28,100 @@
   .oculto{display:none !important}
   button{font-family:inherit}
 
-  /* ---------- carregando ---------- */
   .carregando{min-height:100vh;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px}
 
-  /* ---------- login ---------- */
+  /* ---------- login (inalterado em essência) ---------- */
   .login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;
-    background:linear-gradient(160deg,var(--navy),#0f1a30)}
+    background:linear-gradient(160deg,var(--navy),#0d1425)}
   .login-cx{width:100%;max-width:380px;background:#fff;border-radius:var(--radius);padding:30px 28px 24px;
     box-shadow:0 20px 60px rgba(0,0,0,.35)}
   .login-marca{text-align:center;margin-bottom:22px}
-  .fa{width:84px;height:44px;margin:0 auto;display:flex;align-items:center;justify-content:center}
-  .fa img{width:100%;height:100%;object-fit:contain;display:block}
+  .login-marca .fa{width:84px;height:44px;margin:0 auto;display:flex;align-items:center;justify-content:center}
+  .login-marca .fa img{width:100%;height:100%;object-fit:contain;display:block}
   .login-marca h1{font-family:var(--serif);font-size:19px;margin:14px 0 2px;color:var(--navy)}
   .login-marca p{margin:0;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
   .login-cx label{display:block;font-size:12px;color:var(--muted);font-weight:600;margin:14px 0 5px}
   .login-cx input{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:9px;font-size:14px;font-family:inherit}
-  .login-cx input:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(27,42,74,.10)}
+  .login-cx input:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(23,34,63,.10)}
   .entrar{width:100%;margin-top:20px;padding:12px;border:0;border-radius:9px;background:var(--navy);color:#fff;
     font-size:14.5px;font-weight:600;cursor:pointer}
   .entrar:hover{background:var(--navy-2)} .entrar:disabled{opacity:.6;cursor:default}
   .erro{display:none;margin-top:12px;padding:10px 12px;background:#fdeceb;color:#7a1a15;border-radius:9px;font-size:13px}
   .login-cx .rodape{margin-top:18px;padding-top:14px;border-top:1px solid var(--line-2);font-size:11.5px;color:var(--muted);text-align:center;line-height:1.6}
 
-  /* ---------- topo ---------- */
-  .topo{display:flex;align-items:center;gap:12px;padding:12px 20px;background:var(--navy);color:#fff;
-    position:sticky;top:0;z-index:40;flex-wrap:wrap}
-  .topo .fa{width:54px;height:30px;margin:0}
-  .topo .txt{font-family:var(--serif);font-size:15px;font-weight:700;letter-spacing:.4px}
-  .topo .marca{display:flex;align-items:center;gap:10px}
+  /* ---------- faixa única de 44px ---------- */
+  .topo{display:flex;align-items:center;gap:10px;height:44px;padding:0 14px;background:var(--navy);color:#fff;
+    position:sticky;top:0;z-index:40}
+  .topo .fa{height:22px;display:flex;align-items:center;flex:0 0 auto}
+  .topo .fa img{height:22px;width:auto;display:block}
+  .topo .divisor{width:1px;height:20px;background:rgba(255,255,255,.28);flex:0 0 auto}
+  .topo .nome{font-size:13px;color:#e7ecf6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;max-width:52vw}
+  .topo .selo{font-size:9.5px;font-weight:700;letter-spacing:.6px;color:var(--gold);border:1px solid rgba(176,141,87,.55);
+    padding:1px 7px;border-radius:20px;flex:0 0 auto}
   .topo .sep{flex:1}
-  .quem{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#cfd6e6}
-  .selo{font-size:10px;font-weight:700;letter-spacing:.6px;background:rgba(255,255,255,.12);
-    border:1px solid rgba(255,255,255,.28);padding:2px 8px;border-radius:20px}
-  .bt-topo{font-size:12.5px;font-weight:600;color:#e7ecf6;background:rgba(255,255,255,.08);
-    border:1px solid rgba(255,255,255,.28);padding:7px 14px;border-radius:20px;cursor:pointer;white-space:nowrap}
-  .bt-topo:hover{background:rgba(255,255,255,.18);border-color:var(--gold)}
+  .topo .sair{background:none;border:0;color:#aab4cc;font-size:12.5px;font-weight:600;cursor:pointer;padding:6px 2px;flex:0 0 auto}
+  .topo .sair:hover{color:#fff}
 
   /* ---------- conteúdo ---------- */
-  .wrap{max-width:860px;margin:0 auto;padding:30px 20px 90px}
-  .titulo-pg{font-family:var(--serif);font-size:24px;margin:10px 0 4px;color:var(--navy)}
-  .sub-pg{margin:0;color:var(--muted);font-size:14px}
+  .wrap{max-width:860px;margin:0 auto;padding:26px 20px 90px}
+  .wrap-larga{max-width:980px;margin:0 auto;padding:22px 20px 90px}
+  .saud{font-family:var(--font);font-size:20px;font-weight:500;color:var(--navy);margin:0}
+  .apoio{margin:3px 0 0;font-size:13px;color:var(--muted)}
 
-  .grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;margin-top:26px}
-  .modulo{display:flex;flex-direction:column;gap:10px;background:var(--card);border:1px solid var(--line);
-    border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;cursor:pointer;transition:.15s;
+  .grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;margin-top:22px}
+  .modulo{display:flex;flex-direction:column;gap:9px;background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;cursor:pointer;transition:.15s;
     text-decoration:none;color:inherit}
   .modulo:hover{border-color:var(--navy);box-shadow:0 6px 20px rgba(16,24,40,.12);transform:translateY(-2px)}
-  .modulo .ico{width:44px;height:44px;border-radius:10px;background:var(--line-2);display:flex;
-    align-items:center;justify-content:center;font-size:22px}
+  .modulo .ico{width:40px;height:40px;border-radius:10px;background:var(--line-2);display:flex;
+    align-items:center;justify-content:center;color:var(--gold)}
+  .modulo .ico svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
   .modulo h2{margin:2px 0 0;font-size:16px;color:var(--navy)}
-  .modulo p{margin:0;font-size:13px;color:var(--muted);flex:1}
-  .modulo .ir{font-size:12.5px;font-weight:700;color:var(--gold);letter-spacing:.3px}
-  .modulo .tag{align-self:flex-start;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
-    background:var(--line-2);color:var(--muted);padding:3px 9px;border-radius:20px}
+  .modulo .estado{margin:0;font-size:13px;color:var(--muted);flex:1;line-height:1.45}
+  .modulo .pe{display:flex;align-items:center;gap:8px;margin-top:2px}
+  .pill{font-size:11px;font-weight:700;letter-spacing:.2px;padding:3px 10px;border-radius:20px;white-space:nowrap}
+  .pill.acao{background:var(--acao-bg);color:var(--acao-tx)}
+  .pill.escrit{background:var(--esc-bg);color:var(--esc-tx)}
+  .pill.novo{background:var(--novo-bg);color:var(--novo-tx)}
+  .modulo .ir{margin-left:auto;font-size:12.5px;font-weight:700;color:var(--gold);letter-spacing:.3px;white-space:nowrap}
 
-  .nota{margin-top:30px;padding:14px 16px;background:#eef4fb;border:1px solid #d3e2f2;border-radius:10px;
+  .nota{margin-top:28px;padding:13px 16px;background:#eef4fb;border:1px solid #d3e2f2;border-radius:10px;
     font-size:12.5px;color:#1c3d63}
+
+  /* ---------- fila de trabalho (escritório) ---------- */
+  .fila-tit{font-family:var(--font);font-size:20px;font-weight:500;color:var(--navy);margin:0}
+  .fila-sub{margin:3px 0 0;font-size:13px;color:var(--muted)}
+  .fila{margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);overflow:hidden}
+  .fitem{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line-2);
+    text-decoration:none;color:inherit;transition:.12s}
+  .fitem:last-child{border-bottom:0}
+  .fitem:hover{background:#f8fafc}
+  .fitem .fico{width:32px;height:32px;flex:0 0 auto;border-radius:8px;background:var(--line-2);
+    display:flex;align-items:center;justify-content:center}
+  .fitem .fico svg{width:15px;height:15px;stroke:var(--gold);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .fitem .fmeio{flex:1;min-width:0}
+  .fitem .fcli{font-size:13.5px;font-weight:700;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .fitem .frot{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .fitem .ftempo{flex:0 0 auto;font-size:11.5px;font-weight:700;color:var(--muted);white-space:nowrap}
+  .fitem .ftempo.velho{color:#a4261b}
+  .fitem .furg{flex:0 0 auto;font-size:9.5px;font-weight:800;letter-spacing:.4px;background:#fdecea;color:#a4261b;
+    padding:2px 7px;border-radius:4px}
+  .fila-vazia{padding:22px 16px;text-align:center;color:var(--muted);font-size:13.5px}
+
+  .sec-tit{margin:30px 0 0;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted)}
+
+  /* ---------- barra de atalhos externos ---------- */
+  .atalhos{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .atalho{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);
+    border-radius:20px;padding:8px 16px;text-decoration:none;color:var(--navy);font-size:13px;font-weight:600;transition:.15s}
+  .atalho:hover{border-color:var(--gold)}
+  .atalho svg{width:15px;height:15px;stroke:var(--gold);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+  @media(max-width:560px){
+    .topo .nome{max-width:38vw}
+    .grade{grid-template-columns:1fr}
+  }
 </style>
 </head>
 <body>
@@ -112,26 +154,36 @@
 <!-- =================== APP =================== -->
 <div id="app" class="oculto">
   <div class="topo">
-    <div class="marca">
-      <div class="fa"><img src="logo-fa-branco.png" alt="F|A"></div>
-      <div class="txt">Espaço do Cliente</div>
-    </div>
+    <div class="fa"><img src="logo-fa-branco.png" alt="F|A"></div>
+    <div class="divisor"></div>
+    <div class="nome" id="quemNome"></div>
+    <span class="selo oculto" id="seloEsc">ESCRITÓRIO</span>
     <div class="sep"></div>
-    <div class="quem">
-      <span id="quemNome"></span>
-      <span class="selo" id="quemSelo"></span>
-    </div>
-    <button class="bt-topo" id="btSair">Sair</button>
+    <button class="sair" id="btSair">Sair</button>
   </div>
 
-  <div class="wrap">
-    <h1 class="titulo-pg" id="saudacao">Bem-vindo</h1>
-    <p class="sub-pg">Escolha abaixo o serviço que deseja acessar.</p>
-    <div class="grade" id="grade"></div>
-    <div class="nota" id="notaCliente">
+  <!-- visão do cliente -->
+  <div class="wrap oculto" id="vCliente">
+    <h1 class="saud" id="saudacao">Olá</h1>
+    <p class="apoio" id="apoio"></p>
+    <div class="grade" id="gradeCli"></div>
+    <div class="nota">
       Você entra nos portais com este mesmo login, sem digitar a senha de novo.
       Em caso de dúvida, fale com o escritório.
     </div>
+  </div>
+
+  <!-- visão do escritório -->
+  <div class="wrap-larga oculto" id="vEscritorio">
+    <h1 class="fila-tit">Fila de trabalho</h1>
+    <p class="fila-sub" id="filaSub"></p>
+    <div class="fila" id="fila"></div>
+
+    <div class="sec-tit">Áreas do portal</div>
+    <div class="grade" id="gradeEsc"></div>
+
+    <div class="sec-tit">Sistemas externos</div>
+    <div class="atalhos" id="atalhos"></div>
   </div>
 </div>
 
@@ -139,65 +191,49 @@
 <script>
 /* =========================================================================
    Hub de acesso - Felipe Albuquerque Advocacia
-   Mesmo projeto Supabase dos portais: a sessão criada aqui vale lá,
-   porque tudo mora na mesma origem (rrguimaraes09-hub.github.io).
-   A chave "anon" é feita para ficar em página pública: sozinha ela não
-   lê nada - quem manda é o RLS do banco.
+   Repaginação 29/08/2026: visão do cliente com estado real por card;
+   visão do escritório abre na FILA DE TRABALHO (todas as pendências dos
+   portais, cruzando clientes). Mesma origem e mesmo Supabase de sempre:
+   a sessão criada aqui vale nos portais; quem manda é o RLS.
    ========================================================================= */
 const SUPABASE_URL = "https://jhtucanundmlsmipfnie.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_MTMJaYe0e2kplnrR_TZfpA_Hq8JXXGK";
 
-/* Módulos exibidos. "quem": todos | escritorio. "externo" abre em outra aba
-   (sistema com login próprio, fora do nosso Supabase). */
+const URL_DOC = "https://rrguimaraes09-hub.github.io/documentos/";
+const URL_CED = "https://rrguimaraes09-hub.github.io/cedentes/";
+const URL_REL = "https://rrguimaraes09-hub.github.io/relatorios/";
+const URL_QUA = "https://rrguimaraes09-hub.github.io/checklist/qualificacao.html";
+
+/* Ícones de traço (24×24, stroke 2) — desenhados inline para a página seguir
+   autocontida. Renderizados em 18px dourado nos cards e 15px na fila. */
+const ICONES = {
+  pasta:   '<svg viewBox="0 0 24 24"><path d="M6 10V6.5A1.5 1.5 0 0 1 7.5 5h3l2 2h6A1.5 1.5 0 0 1 20 8.5V10"/><path d="M3.5 18.5 6 10h15l-2.6 8.5z"/></svg>',
+  lupa:    '<svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 4.5 4.5"/><path d="m8 10.7 1.8 1.8 3.4-3.4"/></svg>',
+  grafico: '<svg viewBox="0 0 24 24"><path d="M4 4v16h16"/><path d="M8.5 20v-6"/><path d="M12.5 20v-10"/><path d="M16.5 20v-4"/></svg>',
+  pena:    '<svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M10 12h5"/><path d="M10 16h5"/></svg>',
+  balanca: '<svg viewBox="0 0 24 24"><path d="M12 4v16"/><path d="M8 20h8"/><path d="M5 8h14"/><path d="M7 8l-2.4 5a2.9 2.9 0 0 0 4.8 0z"/><path d="M17 8l-2.4 5a2.9 2.9 0 0 0 4.8 0z"/></svg>',
+  carta:   '<svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="1.5"/><path d="m3.5 7.5 8.5 5.5 8.5-5.5"/></svg>'
+};
+
 const MODULOS = [
-  {
-    titulo: "Envio de Documentos",
-    ico: "📁",
-    url: "https://rrguimaraes09-hub.github.io/documentos/",
-    quem: "todos",
-    descCliente: "Envie os documentos dos seus casos pelo checklist e acompanhe a conferência do escritório.",
-    descEscritorio: "Quadro de todas as pastas de documentos, de todos os clientes, com o funil de conferência."
-  },
-  {
-    titulo: "Análise de Cedentes",
-    ico: "🔎",
-    url: "https://rrguimaraes09-hub.github.io/cedentes/",
-    quem: "todos",
-    descCliente: "Peça a análise processual de um pretenso cedente e acompanhe o andamento até o relatório.",
-    descEscritorio: "Fila de análises de cedentes de todos os clientes, da entrada ao relatório entregue."
-  },
-  {
-    titulo: "Relatórios Mensais",
-    ico: "📊",
-    url: "https://rrguimaraes09-hub.github.io/relatorios/",
-    quem: "todos",
-    descCliente: "Acompanhe os relatórios mensais da sua carteira: o que aconteceu no período e os próximos passos de cada processo.",
-    descEscritorio: "Gestão dos relatórios mensais de carteira: minuta, revisão e publicação, cliente a cliente."
-  },
-  {
-    titulo: "Gerador de Qualificação",
-    ico: "📝",
-    url: "https://rrguimaraes09-hub.github.io/checklist/qualificacao.html",
-    quem: "escritorio",
-    descEscritorio: "Preâmbulo e qualificação das partes prontos para colar na petição — com leitura de documentos para preencher os campos."
-  },
-  {
-    titulo: "DataJuri",
-    ico: "⚖️",
-    url: "https://dj33.datajuri.com.br",
-    quem: "escritorio",
-    externo: true,
-    descEscritorio: "Sistema jurídico do escritório: processos, atividades e agenda. Login próprio do DataJuri."
-  },
-  {
-    titulo: "E-mail do Escritório",
-    ico: "✉️",
-    url: "https://webmail-seguro.com.br/felipeadv.com.br/?_task=mail&_mbox=INBOX",
-    quem: "escritorio",
-    externo: true,
-    descEscritorio: "Webmail LocaWeb do felipeadv.com.br: caixa de entrada do escritório. Login próprio do webmail."
-  }
+  {id:"documentos", titulo:"Envio de Documentos", ico:"pasta", url:URL_DOC, quem:"todos",
+   descEscritorio:"Quadro de todas as pastas de documentos, de todos os clientes, com o funil de conferência."},
+  {id:"cedentes", titulo:"Análise de Cedentes", ico:"lupa", url:URL_CED, quem:"todos",
+   descEscritorio:"Fila de análises de cedentes de todos os clientes, da entrada ao relatório entregue."},
+  {id:"relatorios", titulo:"Relatórios Mensais", ico:"grafico", url:URL_REL, quem:"todos",
+   descEscritorio:"Gestão dos relatórios mensais de carteira: minuta, revisão e publicação, cliente a cliente."},
+  {id:"qualificacao", titulo:"Gerador de Qualificação", ico:"pena", url:URL_QUA, quem:"escritorio",
+   descEscritorio:"Preâmbulo e qualificação das partes prontos para colar na petição — com leitura de documentos."}
 ];
+const ATALHOS = [
+  {titulo:"DataJuri", ico:"balanca", url:"https://dj33.datajuri.com.br"},
+  {titulo:"E-mail do Escritório", ico:"carta", url:"https://webmail-seguro.com.br/felipeadv.com.br/?_task=mail&_mbox=INBOX"}
+];
+
+/* Pendências vindas do DataJuri (prazos de carteira etc.): ainda sem
+   integração. Quando existir, os itens entram AQUI, no mesmo formato da fila
+   ({area, cliente, rotulo, dias, urgente, url}) — nada de texto fixo espalhado. */
+const FONTE_DATAJURI = [];
 
 let sb = null;
 let eu = null;   // {user_id, nome, papel, cliente_id}
@@ -205,8 +241,197 @@ let eu = null;   // {user_id, nome, papel, cliente_id}
 const esc = s => String(s ?? "").replace(/[&<>"']/g, m =>
   ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
 const ehEscritorio = () => eu && eu.papel === "escritorio";
+const dias = (iso, agora) => {
+  if(!iso) return 0;
+  const t = String(iso).length <= 10 ? new Date(iso + "T00:00:00") : new Date(iso);
+  return Math.max(0, Math.floor(((agora || Date.now()) - t.getTime()) / 864e5));
+};
+const rotDias = d => d === 0 ? "hoje" : "há " + d + " dia" + (d === 1 ? "" : "s");
+const MESES = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+const compLabel = c => { const m = String(c||"").match(/^(\d{4})-(\d{2})/); return m ? MESES[+m[2]-1] + "/" + m[1] : String(c||""); };
+const plural = (n, um, muitos) => n === 1 ? um : muitos.replace("{n}", n);
 
-/* ---------- entrada ---------- */
+/* =========================================================================
+   FONTE DE PENDÊNCIAS — funções puras (recebem linhas, devolvem o objeto
+   que a tela pinta). Toda o conteúdo dinâmico nasce aqui; nada de texto de
+   estado espalhado pelos componentes.
+   ========================================================================= */
+const ETAPAS_DOC_ESCRITORIO = ["enviado","conferencia","revisao","pronto"];
+const ETAPAS_CED_ANDAMENTO  = ["recebido","pesquisa","relatorio","parecer"];
+
+function montarCliente(d){
+  const agora = d.agora || Date.now();
+  const pastas = d.pastas || [], casos = d.casos || [], rels = d.rels || [];
+  const recusadasIds = new Set((d.recusados || []).map(r => r.pasta_id));
+
+  /* --- Documentos --- */
+  const corrigir    = pastas.filter(p => recusadasIds.has(p.id)).length;
+  const preenchendo = pastas.filter(p => p.etapa === "preenchendo" && !recusadasIds.has(p.id)).length;
+  const comEsc      = pastas.filter(p => ETAPAS_DOC_ESCRITORIO.includes(p.etapa)).length;
+  const docPartes = [];
+  if(corrigir)    docPartes.push(plural(corrigir, "1 caso com correção pedida", "{n} casos com correção pedida"));
+  if(preenchendo) docPartes.push(plural(preenchendo, "1 caso aguardando seus documentos", "{n} casos aguardando seus documentos"));
+  if(comEsc)      docPartes.push(plural(comEsc, "1 em conferência com o escritório", "{n} em conferência com o escritório"));
+  const doc = {
+    estado: docPartes.length ? docPartes.join(" · ") : "Abra uma pasta para enviar os documentos de um caso.",
+    pill: (corrigir || preenchendo) ? "acao" : (comEsc ? "escrit" : null)
+  };
+
+  /* --- Cedentes --- */
+  const confirmar = casos.filter(c => c.etapa === "entregue" && (c.parecer || c.parecer_texto) && !c.ciencia_em);
+  const andamento = casos.filter(c => ETAPAS_CED_ANDAMENTO.includes(c.etapa));
+  const cedPartes = [];
+  if(confirmar.length) cedPartes.push(plural(confirmar.length, "1 parecer para confirmar o recebimento", "{n} pareceres para confirmar o recebimento"));
+  if(andamento.length === 1) cedPartes.push("1 análise em andamento · " + andamento[0].cedente);
+  else if(andamento.length > 1) cedPartes.push(andamento.length + " análises em andamento");
+  const ced = {
+    estado: cedPartes.length ? cedPartes.join(" · ") : "Peça a análise processual de um novo cedente.",
+    pill: confirmar.length ? "acao" : (andamento.length ? "escrit" : null)
+  };
+
+  /* --- Relatórios (o RLS só entrega os publicados) --- */
+  let rel = {estado: "Relatórios mensais da sua carteira, publicados pelo escritório.", pill: null};
+  if(rels.length){
+    const ult = rels[0];
+    const novo = ult.publicado_em && dias(ult.publicado_em, agora) <= 15;
+    rel = {estado: "Relatório de " + compLabel(ult.competencia) + " disponível.", pill: novo ? "novo" : null};
+  }
+
+  const atualizacoes = corrigir + preenchendo + confirmar.length + (rel.pill === "novo" ? 1 : 0);
+  return {
+    apoio: atualizacoes
+      ? plural(atualizacoes, "1 atualização na sua carteira", "{n} atualizações na sua carteira")
+      : "Tudo em dia — nenhuma pendência com você no momento.",
+    cards: {documentos: doc, cedentes: ced, relatorios: rel}
+  };
+}
+
+function montarEscritorio(d){
+  const agora = d.agora || Date.now();
+  const nomeCli = id => ((d.clientes || []).find(c => c.id === id) || {}).nome || id || "—";
+  const fila = [];
+
+  (d.pastas || []).forEach(p => {
+    const dd = dias(p.enviado_em || p.atualizado_em, agora);
+    if(p.etapa === "enviado")
+      fila.push({area:"pasta", cliente:nomeCli(p.cliente_id), rotulo:"Documentos enviados — aguardando conferência" + (p.referencia ? " · " + p.referencia : ""), dias:dd, urgente:false, url:URL_DOC});
+    else if(p.etapa === "conferencia")
+      fila.push({area:"pasta", cliente:nomeCli(p.cliente_id), rotulo:"Pasta em conferência" + (p.referencia ? " · " + p.referencia : ""), dias:dd, urgente:false, url:URL_DOC});
+    else if(p.etapa === "pronto")
+      fila.push({area:"pasta", cliente:nomeCli(p.cliente_id), rotulo:"Pronta para protocolo" + (p.referencia ? " · " + p.referencia : ""), dias:dd, urgente:false, url:URL_DOC});
+  });
+
+  (d.casos || []).forEach(c => {
+    const dd = dias(c.criado_em, agora);
+    if(c.etapa === "recebido")
+      fila.push({area:"lupa", cliente:nomeCli(c.cliente_id), rotulo:"Pedido de análise aguardando início · " + c.cedente, dias:dd, urgente:!!c.urgente, url:URL_CED});
+    else if(["pesquisa","relatorio","parecer"].includes(c.etapa) && dd >= 3)
+      fila.push({area:"lupa", cliente:nomeCli(c.cliente_id), rotulo:"Análise em andamento parada · " + c.cedente, dias:dd, urgente:!!c.urgente, url:URL_CED});
+    else if(c.etapa === "entregue" && (c.parecer || c.parecer_texto) && !c.ciencia_em){
+      const de = dias(c.atualizado_em || c.criado_em, agora);
+      if(de >= 3) fila.push({area:"lupa", cliente:nomeCli(c.cliente_id), rotulo:(c.parecer_aberto_em ? "Parecer aberto sem ciência do cliente" : "Parecer entregue e ainda não aberto") + " · " + c.cedente, dias:de, urgente:false, url:URL_CED});
+    }
+  });
+
+  /* relatórios não publicados: agregados por competência, para não inundar a fila */
+  const pend = (d.rels || []).filter(r => r.status !== "publicado");
+  const porComp = {};
+  pend.forEach(r => { (porComp[r.competencia] = porComp[r.competencia] || []).push(r); });
+  Object.keys(porComp).sort().forEach(comp => {
+    const n = porComp[comp].length;
+    const dd = Math.max(...porComp[comp].map(r => dias(r.criado_em, agora)), 0);
+    fila.push({area:"grafico", cliente: n === 1 ? nomeCli(porComp[comp][0].cliente_id) : "Vários clientes",
+      rotulo: plural(n, "1 relatório de " + compLabel(comp) + " aguardando revisão e publicação",
+                        "{n} relatórios de " + compLabel(comp) + " aguardando revisão e publicação"),
+      dias:dd, urgente:false, url:URL_REL});
+  });
+
+  (d.dataJuri || []).forEach(x => fila.push(x));
+
+  fila.sort((a,b) => (b.urgente - a.urgente) || (b.dias - a.dias));
+  return {fila};
+}
+
+/* =========================================================================
+   COLETA (Supabase) — degrada com elegância: se uma consulta falhar, o card
+   correspondente mostra o texto neutro e a fila segue com o que veio.
+   ========================================================================= */
+async function coletarCliente(){
+  const [p, ri, c, r] = await Promise.all([
+    sb.from("pastas").select("id,etapa"),
+    sb.from("itens").select("pasta_id").eq("situacao","recusado"),
+    sb.from("casos").select("id,cedente,etapa,urgente,ciencia_em,parecer,parecer_texto,parecer_aberto_em"),
+    sb.from("relatorios_mensais").select("competencia,status,publicado_em").order("competencia",{ascending:false})
+  ]);
+  return montarCliente({pastas:p.data||[], recusados:ri.data||[], casos:c.data||[], rels:r.data||[]});
+}
+
+async function coletarEscritorio(){
+  const [cls, p, c, r] = await Promise.all([
+    sb.from("clientes").select("id,nome").eq("ativo",true),
+    sb.from("pastas").select("id,cliente_id,referencia,etapa,enviado_em,atualizado_em"),
+    sb.from("casos").select("id,cliente_id,cedente,etapa,urgente,criado_em,atualizado_em,ciencia_em,parecer,parecer_texto,parecer_aberto_em"),
+    sb.from("relatorios_mensais").select("id,cliente_id,competencia,status,criado_em")
+  ]);
+  return montarEscritorio({clientes:cls.data||[], pastas:p.data||[], casos:c.data||[], rels:r.data||[], dataJuri:FONTE_DATAJURI});
+}
+
+/* =========================================================================
+   RENDER
+   ========================================================================= */
+function pillHTML(tipo){
+  if(tipo === "acao")   return '<span class="pill acao">Ação sua</span>';
+  if(tipo === "escrit") return '<span class="pill escrit">Com o escritório</span>';
+  if(tipo === "novo")   return '<span class="pill novo">Novo</span>';
+  return "";
+}
+
+function pintarCliente(fonte){
+  const primeiro = String(eu.nome || "").trim().split(/\s+/)[0];
+  document.getElementById("saudacao").textContent = primeiro ? "Olá, " + primeiro : "Olá";
+  document.getElementById("apoio").textContent = fonte.apoio;
+  document.getElementById("gradeCli").innerHTML = MODULOS.filter(m => m.quem === "todos").map(m => {
+    const cardEstado = fonte.cards[m.id] || {estado:"", pill:null};
+    return `<a class="modulo" href="${esc(m.url)}">
+      <div class="ico">${ICONES[m.ico]}</div>
+      <h2>${esc(m.titulo)}</h2>
+      <p class="estado">${esc(cardEstado.estado)}</p>
+      <div class="pe">${pillHTML(cardEstado.pill)}<span class="ir">Acessar →</span></div>
+    </a>`;
+  }).join("");
+}
+
+function pintarEscritorio(fonte){
+  const f = fonte.fila;
+  document.getElementById("filaSub").textContent = f.length
+    ? plural(f.length, "1 pendência nos portais, em ordem de urgência.", "{n} pendências nos portais, em ordem de urgência.")
+    : "Nada pendente nos portais neste momento.";
+  document.getElementById("fila").innerHTML = f.length ? f.map(i => `
+    <a class="fitem" href="${esc(i.url)}">
+      <div class="fico">${ICONES[i.area] || ICONES.pasta}</div>
+      <div class="fmeio">
+        <div class="fcli">${esc(i.cliente)}</div>
+        <div class="frot">${esc(i.rotulo)}</div>
+      </div>
+      ${i.urgente ? '<span class="furg">URGENTE</span>' : ""}
+      <span class="ftempo ${i.dias >= 3 ? "velho" : ""}">${rotDias(i.dias)}</span>
+    </a>`).join("") : '<div class="fila-vazia">✓ Fila limpa — nada pendente nos portais.</div>';
+
+  document.getElementById("gradeEsc").innerHTML = MODULOS.map(m => `
+    <a class="modulo" href="${esc(m.url)}">
+      <div class="ico">${ICONES[m.ico]}</div>
+      <h2>${esc(m.titulo)}</h2>
+      <p class="estado">${esc(m.descEscritorio)}</p>
+      <div class="pe"><span class="ir">Acessar →</span></div>
+    </a>`).join("");
+
+  document.getElementById("atalhos").innerHTML = ATALHOS.map(a => `
+    <a class="atalho" href="${esc(a.url)}" target="_blank" rel="noopener">${ICONES[a.ico]}${esc(a.titulo)}</a>`).join("");
+}
+
+/* =========================================================================
+   ENTRADA
+   ========================================================================= */
 async function iniciar(){
   sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   const { data:{ session } } = await sb.auth.getSession();
@@ -257,29 +482,33 @@ async function entrar(){
   document.getElementById("telaLogin").classList.add("oculto");
   document.getElementById("app").classList.remove("oculto");
   document.getElementById("quemNome").textContent = eu.nome;
-  document.getElementById("quemSelo").textContent = ehEscritorio() ? "ESCRITÓRIO" : "CLIENTE";
-  const primeiroNome = String(eu.nome || "").trim().split(/\s+/)[0];
-  document.getElementById("saudacao").textContent =
-    primeiroNome ? `Olá, ${primeiroNome}` : "Olá";
-  if(ehEscritorio()) document.getElementById("notaCliente").classList.add("oculto");
+  document.getElementById("seloEsc").classList.toggle("oculto", !ehEscritorio());
+  document.getElementById("vCliente").classList.toggle("oculto", ehEscritorio());
+  document.getElementById("vEscritorio").classList.toggle("oculto", !ehEscritorio());
 
-  pintarModulos();
+  await recarregar();
+
+  // Pendência nova aparece sem recarregar a página: qualquer mudança nas
+  // tabelas dos portais repinta a fila/os cards.
+  let t = null;
+  sb.channel("hub-vivo")
+    .on("postgres_changes", {event:"*", schema:"public", table:"pastas"},   agendar)
+    .on("postgres_changes", {event:"*", schema:"public", table:"itens"},    agendar)
+    .on("postgres_changes", {event:"*", schema:"public", table:"casos"},    agendar)
+    .on("postgres_changes", {event:"*", schema:"public", table:"relatorios_mensais"}, agendar)
+    .subscribe();
+  function agendar(){ clearTimeout(t); t = setTimeout(recarregar, 800); }
 }
 
-function pintarModulos(){
-  const visiveis = MODULOS.filter(m => m.quem === "todos" || ehEscritorio());
-  document.getElementById("grade").innerHTML = visiveis.map(m => {
-    const desc = ehEscritorio() ? m.descEscritorio : m.descCliente;
-    const alvo = m.externo ? ` target="_blank" rel="noopener"` : "";
-    const tag  = m.externo ? `<span class="tag">Sistema externo</span>` : "";
-    return `<a class="modulo" href="${esc(m.url)}"${alvo}>
-      <div class="ico">${m.ico}</div>
-      <h2>${esc(m.titulo)}</h2>
-      ${tag}
-      <p>${esc(desc)}</p>
-      <span class="ir">Acessar →</span>
-    </a>`;
-  }).join("");
+async function recarregar(){
+  try{
+    if(ehEscritorio()) pintarEscritorio(await coletarEscritorio());
+    else pintarCliente(await coletarCliente());
+  }catch(e){
+    /* Falhou a coleta (rede, RLS): a tela ainda fica de pé, com textos neutros. */
+    if(ehEscritorio()) pintarEscritorio({fila:[]});
+    else pintarCliente(montarCliente({}));
+  }
 }
 
 document.getElementById("btSair").onclick = async () => { await sb.auth.signOut(); };
